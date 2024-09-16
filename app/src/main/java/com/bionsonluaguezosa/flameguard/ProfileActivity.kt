@@ -1,26 +1,66 @@
 package com.bionsonluaguezosa.flameguard
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.util.Log
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import android.widget.Button
+import com.bionsonluaguezosa.flameguard.databinding.ActivityProfileBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ProfileActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityProfileBinding
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_profile)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Find the Edit button
-        val editButton: Button = findViewById(R.id.edit_btn)
+        // Initialize Firebase Auth and Firestore
+        firebaseAuth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
-        // Set OnClickListener to navigate to EditProfileActivity
-        editButton.setOnClickListener {
-            val intent = Intent(this@ProfileActivity, EditProfileActivity::class.java)
-            startActivity(intent)
+        // Fetch and display user data
+        fetchUserData()
+    }
+
+    private fun fetchUserData() {
+        // Get the current user
+        val currentUser = firebaseAuth.currentUser
+
+        if (currentUser != null) {
+            val userId = currentUser.uid
+
+            // Retrieve the user data from Firestore
+            firestore.collection("users").document(userId).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        // Extract data from Firestore document
+                        val firstName = document.getString("firstName") ?: ""
+                        val lastName = document.getString("lastName") ?: ""
+                        val phoneNumber = document.getString("phoneNumber") ?: ""
+                        val email = document.getString("email") ?: ""
+                        val address = document.getString("address") ?: ""
+
+                        // Update TextViews with retrieved data
+                        binding.username.text = "$firstName $lastName"
+                        binding.phoneNumber.text = phoneNumber
+                        binding.email.text = email
+                        binding.address.text = address
+                    } else {
+                        Toast.makeText(this, "User data not found", Toast.LENGTH_LONG).show()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(this, "Error fetching user data: ${exception.message}", Toast.LENGTH_LONG).show()
+                    Log.e("Firestore", "Error fetching user data", exception)
+                }
+        } else {
+            Toast.makeText(this, "User not logged in", Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -42,14 +42,12 @@ class RegistrationActivity : AppCompatActivity() {
         addressEditText = binding.address
 
         // Back button action
-        val backButton = binding.backButton
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish() // Go back to the previous activity
         }
 
         // Submit button action
-        val submitButton = binding.submitButton
-        submitButton.setOnClickListener {
+        binding.submitButton.setOnClickListener {
             val firstName = firstNameEditText.text.toString()
             val lastName = lastNameEditText.text.toString()
             val phoneNumber = phoneNumberEditText.text.toString()
@@ -110,8 +108,8 @@ class RegistrationActivity : AppCompatActivity() {
             "address" to address
         )
 
-        // Save the data in Firestore under "users" collection using the userId
-        firestore.collection("users").document(userId).set(userData)
+        // Save the data in Firestore under "caller" collection using the userId
+        firestore.collection("caller").document(userId).set(userData)
             .addOnSuccessListener {
                 Toast.makeText(this, "User data saved successfully", Toast.LENGTH_LONG).show()
                 Log.d("Firestore", "User data saved successfully")

@@ -31,13 +31,14 @@ class CaptureFireActivity : ComponentActivity() {
 
         // Initialize the ImageView and TextView
         cameraImageView = findViewById(R.id.camera_image)
+        cameraTextView = findViewById(R.id.camera_text) // Initialize cameraTextView with the correct ID
 
         // Set up the camera button click listener
         cameraImageView.setOnClickListener {
             dispatchTakePictureIntent()
         }
 
-        // Optionally, set up the TextView click listener if needed
+        // Set up the TextView click listener if needed
         cameraTextView.setOnClickListener {
             dispatchTakePictureIntent()
         }
@@ -53,6 +54,7 @@ class CaptureFireActivity : ComponentActivity() {
             goToReportDetailsActivity()
         }
     }
+
 
     private fun dispatchTakePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->

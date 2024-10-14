@@ -41,18 +41,15 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_profile -> {
-                    // Handle profile click
                     startActivity(Intent(this, ProfileActivity::class.java))
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
                 R.id.nav_settings -> {
-                    // Handle settings click
                     startActivity(Intent(this, SettingActivity::class.java))
                     drawerLayout.closeDrawer(GravityCompat.START)
                     true
                 }
-                // Add other navigation items here
                 else -> false
             }
         }
@@ -77,7 +74,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Set default fragment
         if (savedInstanceState == null) {
             bottomNavigationView.selectedItemId = R.id.nav_home
         }
@@ -105,7 +101,6 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_notification -> {
-                // Handle notification icon click
                 startActivity(Intent(this, NotificationActivity::class.java))
                 true
             }

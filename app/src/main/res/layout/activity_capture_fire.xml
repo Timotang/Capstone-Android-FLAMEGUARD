@@ -44,6 +44,17 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
+    <!-- Add the TextView for cameraTextView -->
+    <TextView
+        android:id="@+id/camera_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click to take a picture"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:layout_below="@id/camera_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp" />
 
     <!-- Bottom Buttons -->
     <LinearLayout
